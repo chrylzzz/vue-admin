@@ -1,4 +1,4 @@
-package com.chryl.admin.controller;
+package com.chryl.admin.controller.admin;
 
 import com.chryl.admin.mapper.jpa.UserMapper;
 import com.chryl.admin.po.User;
@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 /**
- * vue-admin-template 接口
+ * vue-admin 接口
+ * 无db连接,实现前端控制权限
  * <p>
  * Created by Chryl on 2019/12/31.
  */
 @RestController
-//@RequestMapping("user")
-public class UserController {
+@RequestMapping("user1")
+public class UserAdminController2 {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
     @Autowired
@@ -26,7 +27,7 @@ public class UserController {
 
     @PostMapping("/login")
     public Object show(@RequestBody User user) {
-        //校验成功
+        //校验用户密码成功
 //        String token = stringRedisTemplate.opsForValue().get(user.getUsername());
         String token = "9888a28586104f57970ec7c5666989a6";
         if (StringUtils.isBlank(token)) {
@@ -41,13 +42,29 @@ public class UserController {
         map.put("status", "success");
         return ReturnResult.create(map);
     }
-
+    //此接口为,用户登录之后 接着发送给服务端验证token信息接口
     @GetMapping("info")
     public Object show(String token) {
+        //验证token
         User user = new User();
         user.setUsername("admin");
         user.setPassword("111111");
-        return ReturnResult.create(user);
+        //
+        Map<String, Object> loginMap = new HashMap<>();
+        String[] roles = {"admin", "editor"};
+//        String[] roles = {"1", "2"};
+//        String[] roles = {"admin", "2"};
+//        String[] roles = {"editor", "2"};
+        String name = "admin";
+        String avatar = "avatar";
+        String introduction = "introduction";
+        loginMap.put("roles", roles);
+        loginMap.put("name", name);
+        loginMap.put("avatar", avatar);
+        loginMap.put("introduction", introduction);
+        loginMap.put("username", "admin");
+
+        return ReturnResult.create(loginMap);
     }
 
     @PostMapping("logout")

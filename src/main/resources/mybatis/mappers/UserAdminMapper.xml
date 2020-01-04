@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chryl.admin.mapper.common.UserAdminMapper">
+
+
+    <resultMap id="UserByUserName" type="com.chryl.admin.po.VUser">
+        <id column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="age" jdbcType="INTEGER" property="age"/>
+        <result column="birth" jdbcType="DATE" property="birth"/>
+        <result column="is_pass" jdbcType="INTEGER" property="isPass"/>
+        <result column="g_role_id" jdbcType="INTEGER" property="gRoleId"/>
+    </resultMap>
+    <select id="selectVuserByUserName" resultMap="UserByUserName" parameterType="string">
+        SELECT * FROM v_user u WHERE u.username = #{username}
+    </select>
+    <!--  -->
+    <resultMap id="PermissionsById" type="com.chryl.admin.po.VPermissions">
+        <id column="permissions_id" jdbcType="INTEGER" property="permissionsId"/>
+        <result column="permissions_code" jdbcType="VARCHAR" property="permissionsCode"/>
+        <result column="permissions_desc" jdbcType="VARCHAR" property="permissionsDesc"/>
+    </resultMap>
+    <select id="selectVuserById" parameterType="int" resultMap="PermissionsById">
+    select
+      u.*,r.*,p.*
+    FROM
+      v_user u  LEFT JOIN v_role r ON u.g_role_id = r.role_id
+    LEFT JOIN v_role_permissions s ON r.role_id = s.g_role_id
+    LEFT JOIN v_permissions p ON s.g_permissions_id = p.permissions_id
+    WHERE u.user_id = #{userId}
+    </select>
+</mapper>
