@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 /**
- * vue-admin-template 接口
+ * vue-admin-template 接口,无权限控制,只zzz 页面
  * <p>
  * Created by Chryl on 2019/12/31.
  */
