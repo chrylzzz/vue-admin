@@ -1,26 +1,27 @@
 package com.chryl.admin.po;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
 /**
  * Created by Chryl on 2020/1/4.
  */
-@Entity
-@Table(name = "v_permissions")
+//@Entity
+//@Table(name = "v_permissions")
 public class VPermissions implements Serializable {
     private static final long serialVersionUID = 57565892299326087L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "permissions_id")
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(name = "permissions_id")
     private Integer permissionsId;
 
-    @Column(name = "permissions_code")
+//    @Column(name = "permissions_code")
     private String permissionsCode;
 
-    @Column(name = "permissions_desc")
+//    @Column(name = "permissions_desc")
     private String permissionsDesc;
+
+    private Integer pid;
 
     public VPermissions() {
     }
@@ -29,11 +30,11 @@ public class VPermissions implements Serializable {
         return serialVersionUID;
     }
 
-    public Integer getPermissioinsId() {
+    public Integer getPermissionsId() {
         return permissionsId;
     }
 
-    public void setPermissioinsId(Integer permissionsId) {
+    public void setPermissionsId(Integer permissionsId) {
         this.permissionsId = permissionsId;
     }
 
@@ -51,5 +52,13 @@ public class VPermissions implements Serializable {
 
     public void setPermissionsDesc(String permissionsDesc) {
         this.permissionsDesc = permissionsDesc;
+    }
+
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
     }
 }

@@ -95,7 +95,7 @@ public class UserAdminController {
 
         }
         loginMap.put("code", "404");
-        loginMap.put("status", "fail login : password not validate  or username not validate");
+        loginMap.put("status", "login fail  : password not validate  or username not validate");
         return ReturnResult.create(loginMap);
     }
 

@@ -30,4 +30,84 @@
     LEFT JOIN v_permissions p ON s.g_permissions_id = p.permissions_id
     WHERE u.user_id = #{userId}
     </select>
+    <!-- role - per :得到角色树 -->
+    <resultMap id="v_role_permissions" type="com.chryl.admin.po.VRole">
+        <id column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="role_code" jdbcType="VARCHAR" property="roleCode"/>
+        <result column="role_desc" jdbcType="VARCHAR" property="roleDesc"/>
+        <collection property="children" ofType="com.chryl.admin.po.VRoleMenu">
+            <id column="permissions_id" jdbcType="INTEGER" property="id"/>
+            <result column="permissions_desc" jdbcType="VARCHAR" property="label"/>
+            <result column="pid" jdbcType="VARCHAR" property="parentId"/>
+        </collection>
+    </resultMap>
+    <select id="selectRoleMenusByRolePermissions" resultMap="v_role_permissions">
+        SELECT * FROM v_role r LEFT JOIN v_permissions p ON r.role_id = p.pid
+    </select>
+    <!-- 查看所有角色 -->
+    <resultMap id="roles" type="com.chryl.admin.po.VRole">
+        <id column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="role_code" jdbcType="VARCHAR" property="roleCode"/>
+        <result column="role_desc" jdbcType="VARCHAR" property="roleDesc"/>
+    </resultMap>
+    <select id="selectRoles" resultMap="roles">
+        SELECT * FROM v_role r
+    </select>
+    <select id="selectRoleMenuByRoleId" resultMap="v_role_permissions" parameterType="int">
+        select
+                r.*,
+                p.*
+        FROM
+        v_role r
+        LEFT JOIN v_role_permissions s ON r.role_id = s.g_role_id
+        LEFT JOIN v_permissions p ON s.g_permissions_id = p.permissions_id
+        WHERE r.role_id = #{roleId}
+    </select>
+    <resultMap id="g_role_g_perm" type="com.chryl.admin.po.VRolePermissions">
+        <id column="g_role_id" jdbcType="INTEGER" property="gRoleId"/>
+        <result column="g_permissions_id" jdbcType="INTEGER" property="gPermissionsId"/>
+    </resultMap>
+    <select id="selectPerMissionsByRoleId" parameterType="int" resultMap="g_role_g_perm">
+        SELECT v.g_permissions_id FROM v_role_permissions v WHERE v.g_role_id = #{roleId}
+    </select>
+    <!-- 更新权限列表 -->
+    <delete id="deletePermByRoleId" parameterType="int">
+        DELETE FROM v_role_permissions s WHERE s.g_role_id = #{roleId}
+    </delete>
+    <update id="updateRoleById" parameterType="com.chryl.admin.po.VRole">
+        UPDATE v_role
+        <set>
+            <if test="role.roleName != null">
+                role_name = #{role.roleName},
+            </if>
+            <if test="role.roleCode != null">
+                role_code = #{role.roleCode},
+            </if>
+            <if test="role.roleDesc != null">
+                role_desc = #{role.roleDesc},
+            </if>
+        </set>
+        WHERE role_id = #{role.roleId}
+    </update>
+    <insert id="insertsRolePermsById" parameterType="java.util.Set">
+        INSERT INTO v_role_permissions (g_role_id,g_permissions_id) VALUES
+        <foreach collection="perms" item="perm" index="index" separator=",">
+            (
+            #{roleId},#{perm}
+            )
+        </foreach>
+    </insert>
+
+    <!-- insert -->
+    <insert id="insertRole" parameterType="com.chryl.admin.po.VRole" useGeneratedKeys="true" keyProperty="roleId">
+        INSERT INTO v_role (role_id,role_name,role_desc)
+        VALUES
+        (NULL,#{role.roleName},#{role.roleDesc})
+    </insert>
+    <!--    删除 -->
+    <delete id="deleteRoleById" parameterType="int">
+        DELETE FROM v_role r WHERE  r.role_id =#{roleId}
+    </delete>
 </mapper>

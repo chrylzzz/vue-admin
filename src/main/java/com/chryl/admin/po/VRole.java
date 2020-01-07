@@ -2,28 +2,32 @@ package com.chryl.admin.po;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Chryl on 2020/1/4.
  */
-@Entity
-@Table(name = "v_role")
+//@Entity
+//@Table(name = "v_role")
 public class VRole implements Serializable {
     private static final long serialVersionUID = -3283999049568321392L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "role_id")
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(name = "role_id")
     private Integer roleId;
 
-    @Column(name = "role_name")
+//    @Column(name = "role_name")
     private String roleName;
 
-    @Column(name = "role_code")
+//    @Column(name = "role_code")
     private String roleCode;
 
-    @Column(name = "role_desc")
+//    @Column(name = "role_desc")
     private String roleDesc;
+
+
+    private List<VRoleMenu> children;
 
     public VRole() {
     }
@@ -62,5 +66,13 @@ public class VRole implements Serializable {
 
     public void setRoleDesc(String roleDesc) {
         this.roleDesc = roleDesc;
+    }
+
+    public List<VRoleMenu> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<VRoleMenu> children) {
+        this.children = children;
     }
 }

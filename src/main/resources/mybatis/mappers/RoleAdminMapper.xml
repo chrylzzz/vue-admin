@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chryl.admin.mapper.common.RoleAdminMapper">
+    <resultMap id="role_menu" type="com.chryl.admin.po.VRoleMenuParent">
+        <id column="p_id" jdbcType="INTEGER" property="pId"/>
+        <result column="p_label" jdbcType="VARCHAR" property="pLabel"/>
+        <collection property="children" ofType="com.chryl.admin.po.VRoleMenuSun">
+            <id column="id" jdbcType="INTEGER" property="id"/>
+            <result column="label" jdbcType="VARCHAR" property="label"/>
+            <result column="pid" jdbcType="INTEGER" property="pid"/>
+        </collection>
+    </resultMap>
+    <select id="getRoleMenu" resultMap="role_menu">
+        SELECT * FROM v_role_menu_parent p LEFT JOIN v_role_menu_sun s ON p.p_id = s.pid
+    </select>
+    <resultMap id="menu_role" type="com.chryl.admin.po.VRoleMenu">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="label" jdbcType="VARCHAR" property="label"/>
+        <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
+    </resultMap>
+    <!-- 根据pid 查询目录等级 -->
+   <select id="getMenusByPid" resultMap="menu_role" parameterType="int">
+       SELECT * FROM v_role_menu m WHERE m.parent_id = #{pid}
+   </select>
+
+    <!-- 根据角色id 查询 已有的权限 -->
+    <resultMap id="role_perms_pro" type="com.chryl.admin.po.VRoleSunPro">
+        <id column="g_role_id" jdbcType="INTEGER" property="gRoleId"/>
+        <result column="g_menu_sun_id" jdbcType="INTEGER" property="gMenuSunId"/>
+    </resultMap>
+    <select id="getPermByRoleIdPro" resultMap="role_perms_pro">
+        SELECT p.g_menu_sun_id FROM v_role_sun_pro p WHERE p.g_role_id = #{roleId}
+    </select>
+    <!-- 得到所有的1级 -->
+    <resultMap id="parent_menu" type="com.chryl.admin.po.VRoleMenuParent">
+        <id column="p_id" jdbcType="INTEGER" property="pId"/>
+        <result column="p_label" jdbcType="VARCHAR" property="pLabel"/>
+    </resultMap>
+    <select id="getParentMenu" resultMap="parent_menu">
+      SELECT * FROM v_role_menu_parent
+    </select>
+
+</mapper>
