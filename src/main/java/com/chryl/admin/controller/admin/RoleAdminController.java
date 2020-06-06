@@ -25,6 +25,7 @@ import java.util.Set;
 @RestController
 public class RoleAdminController {
 
+
     //    @Autowired
 //    private VRoleRepo vRoleRepo;
     @Autowired
@@ -162,11 +163,19 @@ public class RoleAdminController {
         }
         return ReturnResult.create(ids);
     }
+
     //得到所有的parentMenu
     @GetMapping("/getPerMenu")
-    public Object getParentMenu(){
+    public Object getParentMenu() {
         List<VRoleMenuParent> parentMenu = roleAdminMapper.getParentMenu();
         return ReturnResult.create(parentMenu);
+    }
+
+    //添加2级
+    @PostMapping("/addSecMenu/{pid}")
+    public Object addSecMenu(@PathVariable StringUtils pid, @RequestBody VRoleMenuSun vRoleMenuSun) {
+
+        return "";
     }
 
 }

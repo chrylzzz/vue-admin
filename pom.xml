@@ -12,7 +12,7 @@
 	<artifactId>vue-admin</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>vue-admin</name>
-	<description>Demo project for Spring Boot</description>
+	<description>vue-element-admin框架的后台测试</description>
 
 	<properties>
 		<java.version>1.8</java.version>
