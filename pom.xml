@@ -12,17 +12,13 @@
 	<artifactId>vue-admin</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>vue-admin</name>
-	<description>vue-element-admin框架的后台测试</description>
+	<description>vue-element-admin-3框架的后台测试</description>
 
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-redis</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
